@@ -25,7 +25,7 @@ from PIL import Image
 import random
 
 BATCH_SIZE = 128
-CUTOUT_SIZE = 10
+CUTOUT_SIZE = 20
 NUM_CLASSES = 10
 
 
@@ -65,7 +65,8 @@ class Cutout(object):
         mask = mask.expand_as(img)
         img = img * mask
 
-        return img.permute(1, 2, 0)
+        return img
+        # return img.permute(1, 2, 0)
 
 
 # def cutout(size, mask_color=(0, 0, 0)):
@@ -109,18 +110,18 @@ class Cutout(object):
 # im = Image.fromarray(tf.concat([train_images[i,...] for i in range(num_images)],1).numpy())
 # im.save("train_tf_images.jpg")
 
-mean = np.array([0.4914, 0.4822, 0.4465])
-std = np.array([0.2470, 0.2435, 0.2616])
+# mean = np.array([0.4914, 0.4822, 0.4465])
+# std = np.array([0.2470, 0.2435, 0.2616])
 
 train_transform = transforms.Compose([
     transforms.ToTensor(),
-    transforms.Normalize(mean, std),
+    transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
     Cutout(CUTOUT_SIZE),
 ])
 
 test_transform = transforms.Compose([
     transforms.ToTensor(),
-    transforms.Normalize(mean, std)])
+    transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
 
 train_dataset = datasets.CIFAR10(root='data/',
                                  train=True,
@@ -145,10 +146,8 @@ test_loader = torch.utils.data.DataLoader(dataset=test_dataset,
                                           num_workers=2)
 
 if __name__ == '__main__':
-    import matplotlib.pyplot as plt
-
-    fig = plt.figure(figsize=(8, 5), dpi=600)
-    ax = fig.subplots(4, 8)
+    # fig = plt.figure(figsize=(8, 5), dpi=600)
+    # ax = fig.subplots(4, 8)
 
     # images, labels = next(iter(train_loader))
     # test_image = Cutout(images[0], CUTOUT_SIZE)
@@ -167,10 +166,16 @@ if __name__ == '__main__':
     #     #     # plt.show(images)
     #     break
 
-    images, labels = next(iter(train_loader))
-    for idx, image in enumerate(images):
-        ax[idx // 8][idx % 8].imshow(np.uint8(image * 255))
-        ax[idx // 8][idx % 8].axis('off')
+    # images, labels = next(iter(train_loader))
+    # for idx, image in enumerate(images):
+    #     ax[idx // 8][idx % 8].imshow(np.uint8(image * 255))
+    #     ax[idx // 8][idx % 8].axis('off')
+    #
+    # plt.show(bbox_inches='tight')
 
-    plt.show(bbox_inches='tight')
-
+    for images, labels in train_loader:
+        test_image = images[0]
+        # test = Image.fromarray(np.uint8(test_image * 255))
+        test = Image.fromarray(np.uint8(test_image.permute(1, 2, 0) / 2 * 255 + .5 * 255))
+        test.save("./task2/train_tf_images_6.jpg")
+        break
