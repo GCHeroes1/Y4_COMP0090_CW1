@@ -1,6 +1,6 @@
 # train script
 # adapted from: https://pytorch.org/tutorials/beginner/blitz/cifar10_tutorial.html
-
+# https://pytorch.org/tutorials/beginner/data_loading_tutorial.html
 import torch
 from torchvision import datasets, transforms
 import torchvision.transforms as transforms
@@ -11,6 +11,9 @@ import numpy as np
 from densenet3 import DenseNet
 from cutout import Cutout
 
+classes = ('plane', 'car', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck')
+
+#https://note.nkmk.me/en/python-pillow-concat-images/
 def get_concat_h_blank(im1, im2, color=(0, 0, 0)):
     dst = Image.new('RGB', (im1.width + im2.width, max(im1.height, im2.height)), color)
     dst.paste(im1, (0, 0))
@@ -41,9 +44,8 @@ if __name__ == '__main__':
     trainset = datasets.CIFAR10(root='data/', train=True, transform=train_transform, download=True)
     trainloader = torch.utils.data.DataLoader(dataset=trainset, batch_size=BATCH_SIZE, shuffle=True, pin_memory=True, num_workers=2)
 
-    # trainset = torchvision.datasets.CIFAR10(root='./data', train=True, download=True, transform=train_transform)
-    # trainloader = torch.utils.data.DataLoader(trainset, batch_size=BATCH_SIZE, shuffle=True, num_workers=2)
-    classes = ('plane', 'car', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck')
+    testset = datasets.CIFAR10(root='data/', train=False, transform=train_transform, download=True)
+    testloader = torch.utils.data.DataLoader(dataset=testset, batch_size=36, shuffle=True, pin_memory=True, num_workers=2)
 
     # example images
     dataiter = iter(trainloader)
@@ -52,7 +54,7 @@ if __name__ == '__main__':
         (torch.cat(images.split(1, 0), 3).squeeze() / 2 * 255 + .5 * 255).permute(1, 2, 0).numpy().astype('uint8'))
     im.save("./task2/train_pt_images.jpg")
     print('train_pt_images.jpg saved.')
-    print('Ground truth labels:' + ' '.join('%5s' % classes[labels[j]] for j in range(BATCH_SIZE)))
+    # print('Ground truth labels:' + ' '.join('%5s' % classes[labels[j]] for j in range(BATCH_SIZE)))
 
     list_of_pixels = list()
     dataiter = iter(cutoutloader)
@@ -62,7 +64,7 @@ if __name__ == '__main__':
         list_of_pixels.append(temp_image)
     get_concat_h_multi_blank(list_of_pixels).save('./task2/cutout.png')
     print('cutout.png saved.')
-    print('Ground truth labels:' + ' '.join('%5s' % classes[labels[j]] for j in range(BATCH_SIZE)))
+    # print('Ground truth labels:' + ' '.join('%5s' % classes[labels[j]] for j in range(BATCH_SIZE)))
 
     # im = Image.fromarray((torch.cat(images.split(1,0),3).squeeze()/2*255+.5*255).numpy().astype('uint8'))
     # im.save("./task2/train_pt_images.jpg")
@@ -86,12 +88,11 @@ if __name__ == '__main__':
     # net = DenseNet()
     #
     # ## loss and optimiser
-    # criterion = torch.nn.CrossEntropyLoss()
+    criterion = torch.nn.CrossEntropyLoss()
     # optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
     #
-    #
     # ## train
-    # for epoch in range(2):  # loop over the dataset multiple times
+    # for epoch in range(10):  # loop over the dataset multiple times
     #
     #     running_loss = 0.0
     #     for i, data in enumerate(cutoutloader, 0):
@@ -117,6 +118,38 @@ if __name__ == '__main__':
     # print('Training done.')
     #
     # # save trained model
-    # torch.save(net.state_dict(), 'saved_model.pt')
+    # torch.save(net.state_dict(), './task2/saved_model.pt')
     # print('Model saved.')
 
+    model = DenseNet()
+    model.load_state_dict(torch.load('./task2/saved_model.pt'))
+    model.eval()
+
+    # test_loss, accuracy = 0, 0
+    # for i, data in enumerate(testloader, 0):
+    #     # get the inputs; data is a list of [inputs, labels]
+    #     inputs, labels = data
+    #
+    #     predictions = model(inputs)
+    #     # # print(predictions)
+    #     # prediction = int(np.argmax(predictions[0]))
+    #     # #
+    #     # prediction_class = classes[prediction]
+    #     # print(prediction_class)
+    #     # label_class_name = classes[int(np.argmax(labels))]
+    #     # #
+    #     # # label_class_names.append(class_name)
+    #
+    #
+    #     test_loss += criterion(predictions, labels).item()
+    #
+    #     ps = torch.exp(predictions)
+    #     equality = (labels.data == ps.max(dim=1)[1])
+    #     accuracy += equality.type(torch.FloatTensor).mean()
+    #
+    # print(test_loss)
+    # print(accuracy)
+
+    from test import test_model
+
+    test_model(model, testloader)

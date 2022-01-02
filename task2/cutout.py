@@ -1,12 +1,4 @@
-# • Implement a data augmentation function cutout, using the Cutout algorithm.
-# o Use square masks with variable size and location. [2]
-# o Add an additional parameter s, such that the mask size can be uniformly sampled from [0, s].
-# [3]
-# o Location should be sampled uniformly in the image space. N.B. care needs to be taken around
-# the boundaries, so the sampled mask maintains its size. [3]
-# o Visualise your implementation, by saving to a PNG file “cutout.png”, a montage of 16 images
-# with randomly augmented images that are about to be fed into network training. [3]
-# o Add Cutout into the network training. [3]
+# https://pytorch.org/tutorials/beginner/data_loading_tutorial.html
 
 import pdb
 import argparse
