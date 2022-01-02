@@ -54,7 +54,7 @@ class _DenseLayer(nn.Module):
         return bottleneck_output
 
     def forward(self, input):  # noqa: F811
-        if isinstance(input, Tensor):
+        if isinstance(input, torch.Tensor):
             prev_features = [input]
         else:
             prev_features = input
@@ -90,7 +90,7 @@ class _DenseBlock(nn.ModuleDict):
 
 class DenseNet(nn.Module):
     def __init__(self, growth_rate=32, block_config=(4, 4, 4),
-                 num_init_features=64, bn_size=4, drop_rate=0, num_classes=1000, memory_efficient=False):
+                 num_init_features=64, bn_size=4, drop_rate=0, num_classes=10, memory_efficient=False):
 
         super(DenseNet, self).__init__()
 
@@ -159,7 +159,7 @@ def densenet3(pretrained=False, progress=True, **kwargs):
 
 
 if __name__ == '__main__':
-    model = densenet3()
+    model = DenseNet()
     print(model)
     # print(repr(model.parameters))
     # print(sum([param.nelement() for param in model.parameters()]))
