@@ -1,23 +1,10 @@
 import torch
 
 import torch.nn as nn
-import torch.optim as optim
 
 import torch.nn.functional as F
-from torch.autograd import Variable
-
-import torchvision.datasets as dset
-import torchvision.transforms as transforms
-from torch.utils.data import DataLoader
-
-import torchvision.models as models
-
-import sys
-import math
 
 from collections import OrderedDict
-
-from torchvision import models
 
 # implemented from https://amaarora.github.io/2020/08/02/densenets.html
 
@@ -29,6 +16,7 @@ class _Transition(nn.Sequential):
         self.add_module('conv', nn.Conv2d(num_input_features, num_output_features,
                                           kernel_size=1, stride=1, bias=False))
         self.add_module('pool', nn.AvgPool2d(kernel_size=2, stride=2))
+
 
 class _DenseLayer(nn.Module):
     def __init__(self, num_input_features, growth_rate, bn_size, drop_rate, memory_efficient=False):
@@ -66,6 +54,7 @@ class _DenseLayer(nn.Module):
                                      training=self.training)
         return new_features
 
+
 class _DenseBlock(nn.ModuleDict):
     _version = 2
 
@@ -87,6 +76,7 @@ class _DenseBlock(nn.ModuleDict):
             new_features = layer(features)
             features.append(new_features)
         return torch.cat(features, 1)
+
 
 class DenseNet(nn.Module):
     def __init__(self, growth_rate=32, block_config=(4, 4, 4),
@@ -148,10 +138,12 @@ class DenseNet(nn.Module):
         out = self.classifier(out)
         return out
 
+
 def _densenet(arch, growth_rate, block_config, num_init_features, pretrained, progress,
               **kwargs):
     model = DenseNet(growth_rate, block_config, num_init_features, **kwargs)
     return model
+
 
 def densenet3(pretrained=False, progress=True, **kwargs):
     return _densenet('densenet3', 32, (4, 4, 4), 64, pretrained, progress,
@@ -161,6 +153,3 @@ def densenet3(pretrained=False, progress=True, **kwargs):
 if __name__ == '__main__':
     model = DenseNet()
     print(model)
-    # print(repr(model.parameters))
-    # print(sum([param.nelement() for param in model.parameters()]))
-    # print(densenet3())
