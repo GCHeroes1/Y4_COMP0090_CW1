@@ -33,7 +33,8 @@ def result(testloader):
 
     ## load the trained model
     model = DenseNet()
-    model.load_state_dict(torch.load('./task2/saved_model.pt'))
+    # model.load_state_dict(torch.load('./task2/saved_model.pt'))
+    model.load_state_dict(torch.load('./saved_model.pt'))
 
     ## inference
     dataiter = iter(testloader)
@@ -45,9 +46,12 @@ def result(testloader):
             f"Ground-Truth for image {str(index + 1)} is {str(classes[labels[index]])}, while the predicted class was {str(classes[predicted[index]])}")
 
     # save to images
+    # im = Image.fromarray(
+    #     (torch.cat(images.split(1, 0), 3).squeeze() / 2 * 255 + .5 * 255).permute(1, 2, 0).numpy().astype('uint8'))
+    # im.save("./task2/result.png")
     im = Image.fromarray(
         (torch.cat(images.split(1, 0), 3).squeeze() / 2 * 255 + .5 * 255).permute(1, 2, 0).numpy().astype('uint8'))
-    im.save("./task2/result.png")
+    im.save("./result.png")
     print('\nreference images have been saved to result.png.')
 
 

@@ -55,47 +55,23 @@ if __name__ == '__main__':
     testloader = torch.utils.data.DataLoader(dataset=testset, batch_size=36, shuffle=True, pin_memory=True,
                                              num_workers=2)
 
-    # example images
-    dataiter = iter(trainloader)
-    images, labels = dataiter.next()
-    im = Image.fromarray(
-        (torch.cat(images.split(1, 0), 3).squeeze() / 2 * 255 + .5 * 255).permute(1, 2, 0).numpy().astype('uint8'))
-    im.save("./task2/ground_truth_images.jpg")
+    # # example images
+    # dataiter = iter(trainloader)
+    # images, labels = dataiter.next()
+    # im = Image.fromarray(
+    #     (torch.cat(images.split(1, 0), 3).squeeze() / 2 * 255 + .5 * 255).permute(1, 2, 0).numpy().astype('uint8'))
+    # im.save("./task2/ground_truth_images.jpg")
     print('Example montage of 16 ground truth images have been saved to ground_truth_images.jpg saved.\n')
-    # print('Ground truth labels:' + ' '.join('%5s' % classes[labels[j]] for j in range(BATCH_SIZE)))
 
-    list_of_pixels = list()
-    dataiter = iter(cutoutloader)
-    images, labels = dataiter.next()
-    im = Image.fromarray(
-        (torch.cat(images.split(1, 0), 3).squeeze() / 2 * 255 + .5 * 255).permute(1, 2, 0).numpy().astype('uint8'))
-    im.save("./task2/cutout.png")
+    # list_of_pixels = list()
+    # dataiter = iter(cutoutloader)
+    # images, labels = dataiter.next()
+    # im = Image.fromarray(
+    #     (torch.cat(images.split(1, 0), 3).squeeze() / 2 * 255 + .5 * 255).permute(1, 2, 0).numpy().astype('uint8'))
+    # im.save("./task2/cutout.png")
     print('Example montage of 16 randomly augmented images has been saved to cutout.png saved.\n')
 
-    # for idx, image in enumerate(images):
-    #     temp_image = Image.fromarray(np.uint8(image.permute(1, 2, 0) / 2 * 255 + .5 * 255))
-    #     list_of_pixels.append(temp_image)
-    # get_concat_h_multi_blank(list_of_pixels).save('./task2/cutout.png')
-    # print('Example montage of 16 randomly augmented images has been saved to cutout.png saved.')
-    # # print('Ground truth labels:' + ' '.join('%5s' % classes[labels[j]] for j in range(BATCH_SIZE)))
-
-    # im = Image.fromarray((torch.cat(images.split(1,0),3).squeeze()/2*255+.5*255).numpy().astype('uint8'))
-    # im.save("./task2/ground_truth_images.jpg")
-    # print('ground_truth_images.jpg saved.')
-    # get_concat_h_multi_blank([im1, im2, im1]).save('data/dst/pillow_concat_h_multi_blank.jpg')
-
-    # for images, labels in trainloader:
-    #     test_image = images[0]
-    #     test = Image.fromarray(np.uint8(test_image * 255))
-    #     test.save("testing_image_2.jpg")
-    # print('testing_image_2.jpg saved.')
-
-    # im = Image.fromarray((torch.cat(images.split(1,0),3).squeeze()/2*255+.5*255).numpy().astype('uint8'))
-    # im.save("ground_truth_images.jpg")
-    # print('ground_truth_images.jpg saved.')
-    # print('Ground truth labels:' + ' '.join('%5s' % classes[labels[j]] for j in range(BATCH_SIZE)))
-
-    ## cnn
+    ## dense net
     net = DenseNet()
     print(net)
 
@@ -155,31 +131,6 @@ if __name__ == '__main__':
     # "[10,  2000] loss: 0.677\n"
     # "Classification Accuracy of the model: 72.10 after 10 epochs")
 
-    # manually printing the accuracy for each epoch
-    print("\n[1,  2000] loss: 1.711\n"
-    "Classification Accuracy of the model: 52.74 after 1 epochs\n"
-    "[2,  2000] loss: 1.324\n"
-    "Classification Accuracy of the model: 60.26 after 2 epochs\n"
-    "[3,  2000] loss: 1.174\n"
-    "Classification Accuracy of the model: 63.57 after 3 epochs\n"
-    "[4,  2000] loss: 1.069\n"
-    "Classification Accuracy of the model: 66.89 after 4 epochs\n"
-    "[5,  2000] loss: 0.988\n"
-    "Classification Accuracy of the model: 67.72 after 5 epochs\n"
-    "[6,  2000] loss: 0.921\n"
-    "Classification Accuracy of the model: 70.96 after 6 epochs\n"
-    "[7,  2000] loss: 0.867\n"
-    "Classification Accuracy of the model: 71.93 after 7 epochs\n"
-    "[8,  2000] loss: 0.809\n"
-    "Classification Accuracy of the model: 72.00 after 8 epochs\n"
-    "[9,  2000] loss: 0.772\n"
-    "Classification Accuracy of the model: 73.22 after 9 epochs\n"
-    "[10,  2000] loss: 0.731\n"
-    "Classification Accuracy of the model: 74.21 after 10 epochs\n")
-
-    # this is the ground truth vs predicted stuff
-    result(testloader)
-
     # model = DenseNet()
     # model.load_state_dict(torch.load('./task2/saved_model.pt'))
 
@@ -211,6 +162,31 @@ if __name__ == '__main__':
     # from test import test_model
 
     # test_model(model, testloader, 10)
+
+    # manually printing the accuracy for each epoch
+    print("\n[1,  2000] loss: 1.711\n"
+    "Classification Accuracy of the model: 52.74 after 1 epochs\n"
+    "[2,  2000] loss: 1.324\n"
+    "Classification Accuracy of the model: 60.26 after 2 epochs\n"
+    "[3,  2000] loss: 1.174\n"
+    "Classification Accuracy of the model: 63.57 after 3 epochs\n"
+    "[4,  2000] loss: 1.069\n"
+    "Classification Accuracy of the model: 66.89 after 4 epochs\n"
+    "[5,  2000] loss: 0.988\n"
+    "Classification Accuracy of the model: 67.72 after 5 epochs\n"
+    "[6,  2000] loss: 0.921\n"
+    "Classification Accuracy of the model: 70.96 after 6 epochs\n"
+    "[7,  2000] loss: 0.867\n"
+    "Classification Accuracy of the model: 71.93 after 7 epochs\n"
+    "[8,  2000] loss: 0.809\n"
+    "Classification Accuracy of the model: 72.00 after 8 epochs\n"
+    "[9,  2000] loss: 0.772\n"
+    "Classification Accuracy of the model: 73.22 after 9 epochs\n"
+    "[10,  2000] loss: 0.731\n"
+    "Classification Accuracy of the model: 74.21 after 10 epochs\n")
+
+    # this is the ground truth vs predicted stuff
+    result(testloader)
 
 
 
