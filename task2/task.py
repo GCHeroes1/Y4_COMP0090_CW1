@@ -126,7 +126,7 @@ if __name__ == '__main__':
     #             print('[%d, %5d] loss: %.3f' %
     #                   (epoch + 1, i + 1, running_loss / 2000))
     #             running_loss = 0.0
-    #     test_model(net, testloader, epoch)
+    #     error = test_model(net, testloader, epoch)
     # print('Training done.')
     #
     # # save trained model
