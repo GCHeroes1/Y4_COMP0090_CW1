@@ -1,0 +1,119 @@
+I will be doing an ablation study on the difference between training with and without the cutout data augmentation algorithm described in Task 2
+
+the dataset size for the first fold is 13344
+the dataset size for the second fold is 13344
+the dataset size for the third fold is 13344 
+
+the dataset size for the first fold is 13344
+the dataset size for the second fold is 13344
+the dataset size for the third fold is 13344 
+
+[1,   400] loss: 1.814
+[1,   800] loss: 1.548
+Classification Accuracy of the model: 50.02 after 1 epochs, competed in 128.06 seconds
+[2,   400] loss: 1.390
+[2,   800] loss: 1.338
+Classification Accuracy of the model: 53.31 after 2 epochs, competed in 138.35 seconds
+[3,   400] loss: 1.233
+[3,   800] loss: 1.218
+Classification Accuracy of the model: 60.71 after 3 epochs, competed in 124.5 seconds
+[4,   400] loss: 1.131
+[4,   800] loss: 1.091
+Classification Accuracy of the model: 63.18 after 4 epochs, competed in 128.74 seconds
+[5,   400] loss: 1.019
+[5,   800] loss: 1.024
+Classification Accuracy of the model: 63.85 after 5 epochs, competed in 128.44 seconds
+Training done.
+Model saved to ./task3/temp_model_0_raw_5.pt.
+
+[1,   400] loss: 1.843
+[1,   800] loss: 1.572
+Classification Accuracy of the model: 49.41 after 1 epochs, competed in 138.09 seconds
+[2,   400] loss: 1.445
+[2,   800] loss: 1.354
+Classification Accuracy of the model: 56.76 after 2 epochs, competed in 128.61 seconds
+[3,   400] loss: 1.297
+[3,   800] loss: 1.255
+Classification Accuracy of the model: 58.63 after 3 epochs, competed in 127.34 seconds
+[4,   400] loss: 1.191
+[4,   800] loss: 1.167
+Classification Accuracy of the model: 64.49 after 4 epochs, competed in 124.46 seconds
+[5,   400] loss: 1.137
+[5,   800] loss: 1.087
+Classification Accuracy of the model: 67.08 after 5 epochs, competed in 129.96 seconds
+Training done.
+Model saved to ./task3/temp_model_0_aug_5.pt.
+
+[1,   400] loss: 1.831
+[1,   800] loss: 1.566
+Classification Accuracy of the model: 47.73 after 1 epochs, competed in 119.69 seconds
+[2,   400] loss: 1.409
+[2,   800] loss: 1.357
+Classification Accuracy of the model: 54.89 after 2 epochs, competed in 120.79 seconds
+[3,   400] loss: 1.247
+[3,   800] loss: 1.197
+Classification Accuracy of the model: 60.17 after 3 epochs, competed in 119.47 seconds
+[4,   400] loss: 1.081
+[4,   800] loss: 1.113
+Classification Accuracy of the model: 62.98 after 4 epochs, competed in 119.62 seconds
+[5,   400] loss: 1.036
+[5,   800] loss: 0.998
+Classification Accuracy of the model: 63.26 after 5 epochs, competed in 119.72 seconds
+Training done.
+Model saved to ./task3/temp_model_1_raw_5.pt.
+
+[1,   400] loss: 1.863
+[1,   800] loss: 1.587
+Classification Accuracy of the model: 48.31 after 1 epochs, competed in 122.16 seconds
+[2,   400] loss: 1.464
+[2,   800] loss: 1.401
+Classification Accuracy of the model: 56.40 after 2 epochs, competed in 122.99 seconds
+[3,   400] loss: 1.299
+[3,   800] loss: 1.265
+Classification Accuracy of the model: 60.84 after 3 epochs, competed in 122.61 seconds
+[4,   400] loss: 1.196
+[4,   800] loss: 1.188
+Classification Accuracy of the model: 65.35 after 4 epochs, competed in 122.36 seconds
+[5,   400] loss: 1.120
+[5,   800] loss: 1.124
+Classification Accuracy of the model: 67.87 after 5 epochs, competed in 122.22 seconds
+Training done.
+Model saved to ./task3/temp_model_1_aug_5.pt.
+
+[1,   400] loss: 1.837
+[1,   800] loss: 1.555
+Classification Accuracy of the model: 47.56 after 1 epochs, competed in 120.22 seconds
+[2,   400] loss: 1.401
+[2,   800] loss: 1.360
+Classification Accuracy of the model: 53.54 after 2 epochs, competed in 120.24 seconds
+[3,   400] loss: 1.267
+[3,   800] loss: 1.193
+Classification Accuracy of the model: 57.37 after 3 epochs, competed in 119.6 seconds
+[4,   400] loss: 1.127
+[4,   800] loss: 1.102
+Classification Accuracy of the model: 60.77 after 4 epochs, competed in 119.62 seconds
+[5,   400] loss: 1.044
+[5,   800] loss: 1.021
+Classification Accuracy of the model: 63.02 after 5 epochs, competed in 119.22 seconds
+Training done.
+Model saved to ./task3/temp_model_2_raw_5.pt.
+
+[1,   400] loss: 1.869
+[1,   800] loss: 1.581
+Classification Accuracy of the model: 47.51 after 1 epochs, competed in 121.43 seconds
+[2,   400] loss: 1.459
+[2,   800] loss: 1.398
+Classification Accuracy of the model: 55.95 after 2 epochs, competed in 121.57 seconds
+[3,   400] loss: 1.304
+[3,   800] loss: 1.284
+Classification Accuracy of the model: 59.51 after 3 epochs, competed in 121.64 seconds
+[4,   400] loss: 1.200
+[4,   800] loss: 1.200
+Classification Accuracy of the model: 64.83 after 4 epochs, competed in 121.5 seconds
+[5,   400] loss: 1.124
+[5,   800] loss: 1.109
+Classification Accuracy of the model: 67.24 after 5 epochs, competed in 121.87 seconds
+Training done.
+Model saved to ./task3/temp_model_2_aug_5.pt.
+
+(['./task3/temp_model_0_raw_5.pt', 63.84909622740569], ['./task3/temp_model_1_aug_5.pt', 67.87160641967903])

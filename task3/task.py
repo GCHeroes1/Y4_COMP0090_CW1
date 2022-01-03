@@ -115,7 +115,7 @@ if __name__ == '__main__':
                                                                                             [development_size,
                                                                                              holdout_test_size])
 
-    print(three_fold_validation(development_raw_dataset, development_cutout_dataset))
+    # print(three_fold_validation(development_raw_dataset, development_cutout_dataset))
 
     # so im going to do three fold validation on the development set, and with that pick the subset of the dataset
     # that gave the lowest error, and then use that
@@ -137,6 +137,11 @@ if __name__ == '__main__':
 
     holdout_test_loader = torch.utils.data.DataLoader(dataset=holdout_test_dataset, batch_size=BATCH_SIZE,
                                                      shuffle=False, pin_memory=True, num_workers=2)
+
+    # f = open('./task3/task3_5_epochs.txt', 'r')
+    # content = f.read()
+    # print(content)
+    # f.close()
 
     # model_densenet_raw = DenseNet()
     # model_densenet_raw.load_state_dict(torch.load(f'./task3/temp_model_{str(0)}_raw_5.pt'))
