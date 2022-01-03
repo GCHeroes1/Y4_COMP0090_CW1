@@ -12,7 +12,7 @@ from resnet import ResNet18
 from wide_resnet import WideResNet
 from resnet_training import resnet_training
 
-EPOCHS = 10
+EPOCHS = 5
 
 def three_fold_dataset(data):
     indices = np.arange(0, len(data))  # build an array = np.asrray( [x for x in range(len(data))])
@@ -139,14 +139,14 @@ if __name__ == '__main__':
                                                      shuffle=False, pin_memory=True, num_workers=2)
 
     # model_densenet_raw = DenseNet()
-    # model_densenet_raw.load_state_dict(torch.load(f'./task3/temp_model_{str(1)}_raw.pt'))
+    # model_densenet_raw.load_state_dict(torch.load(f'./task3/temp_model_{str(0)}_raw_5.pt'))
     # raw_classification_acc, raw_loss = test_model_loss(model_densenet_raw, holdout_test_loader, EPOCHS)
     # print(f"DenseNet3 trained on Cifar10 without data augmentation, with cross validation, achieved a classification "
     #       f"accuracy of {str(raw_classification_acc)} and a loss of {str(np.round(raw_loss, 3))}")
     #
     #
     # model_densenet_aug = DenseNet()
-    # model_densenet_aug.load_state_dict(torch.load(f'./task3/temp_model_{str(1)}_aug.pt'))
+    # model_densenet_aug.load_state_dict(torch.load(f'./task3/temp_model_{str(1)}_aug_5.pt'))
     # aug_classification_acc, aug_loss = test_model_loss(model_densenet_aug, holdout_test_loader, EPOCHS)
     # print(f"DenseNet3 trained on Cifar10 with data augmentation, with cross validation, achieved a classification "
     #       f"accuracy of {str(aug_classification_acc)} and a loss of {str(np.round(aug_loss, 3))}")

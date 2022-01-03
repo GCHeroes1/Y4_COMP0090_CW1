@@ -1,3 +1,6 @@
+# https://newbedev.com/how-to-iterate-over-two-dataloaders-simultaneously-using-pytorch
+
+
 import torch
 import torch.optim as optim
 
@@ -40,9 +43,8 @@ def training(model, training_dataloaders, testing_loader, epochs, save_path):
 
             # print statistics
             running_loss += loss.item()
-            if i % 2000 == 1999:  # print every 2000 mini-batches
-                print('[%d, %5d] loss: %.3f' %
-                      (epoch + 1, i + 1, running_loss / 2000))
+            if i % 400 == 399:  # print every 2000 mini-batches
+                print('[%d, %5d] loss: %.3f' % (epoch + 1, i + 1, running_loss / 400))
                 running_loss = 0.0
         end = time.time()
         total_time = np.round(end-start, 2)
