@@ -8,6 +8,30 @@ from PIL import Image
 
 from densenet3 import DenseNet
 
+def test_model_loss(model, test_loader, epoch):
+    criterion = torch.nn.CrossEntropyLoss()
+
+    model.eval()
+    num_correct, total, running_loss = 0, 0, 0.0
+    for i, data in enumerate(test_loader, 0):
+        # get the inputs; data is a list of [inputs, labels]
+        inputs, labels = data
+
+        with torch.no_grad():
+            outputs = model(inputs)
+            loss = criterion(outputs, labels)
+            running_loss += loss.item()
+
+        pred = torch.max(outputs, 1)[1]
+
+        num_correct += (pred == labels).sum()
+        total += labels.size(0)
+    classification_acc = float(num_correct) / float(total) * 100
+    loss = float(running_loss) / float(total)
+    # print(f"Classification Accuracy of the model: {classification_acc:.2f} after {str(epoch + 1)} epochs")
+    model.train()
+    return classification_acc, loss
+
 
 def test_model(model, test_loader, epoch):
     model.eval()

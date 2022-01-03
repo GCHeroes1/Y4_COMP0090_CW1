@@ -53,5 +53,5 @@ def training(model, training_dataloaders, testing_loader, epochs, save_path):
 
     # save trained model
     torch.save(model.state_dict(), save_path)
-    print(f'Model saved to {save_path}.')
+    print(f'Model saved to {save_path}.\n')
     return save_path, max(classification_accs)

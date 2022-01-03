@@ -2,12 +2,11 @@ import torch
 from torchvision import datasets, transforms
 import torchvision.transforms as transforms
 import torch.optim as optim
-from PIL import Image
 import numpy as np
 
 from densenet3 import DenseNet
 from cutout import Cutout
-from test import test_model, result
+from test import test_model, result, test_model_loss
 from dense_training import training
 from resnet import ResNet18
 from wide_resnet import WideResNet
@@ -45,12 +44,6 @@ def three_fold_dataset(data):
     return first_fold_loader, second_fold_loader, third_fold_loader
 
 
-def itr_merge(*itrs):
-    for itr in itrs:
-        for v in itr:
-            yield v
-
-
 def three_fold_validation(raw_data, aug_data):
     fold_raw_dataloaders = three_fold_dataset(raw_data)  # split the dataset into 3 parts
     fold_aug_dataloaders = three_fold_dataset(aug_data)
@@ -70,12 +63,12 @@ def three_fold_validation(raw_data, aug_data):
         testing_loader = fold_raw_dataloaders[i]
 
         raw_save_path, raw_error = training(temp_raw_model, training_raw_dataloaders, testing_loader,
-                                                            EPOCHS, f'./task3/temp_model{str(i)}_raw.pt')
+                                                            EPOCHS, f'./task3/temp_model_{str(i)}_raw_{str(EPOCHS)}.pt')
         aug_save_path, aug_error = training(temp_aug_model, training_aug_dataloaders, testing_loader,
-                                                            EPOCHS, f'./task3/temp_model{str(i)}_aug.pt)')
-        if raw_error >= raw_predictor[2]:
+                                                            EPOCHS, f'./task3/temp_model_{str(i)}_aug_{str(EPOCHS)}.pt')
+        if raw_error >= raw_predictor[1]:
             raw_predictor[0], raw_predictor[1] = raw_save_path, raw_error
-        if aug_error >= aug_predictor[2]:
+        if aug_error >= aug_predictor[1]:
             aug_predictor[0], aug_predictor[1] = aug_save_path, aug_error
     return raw_predictor, aug_predictor
 
@@ -122,22 +115,50 @@ if __name__ == '__main__':
                                                                                             [development_size,
                                                                                              holdout_test_size])
 
-    # print(three_fold_validation(development_raw_dataset, development_cutout_dataset))
+    print(three_fold_validation(development_raw_dataset, development_cutout_dataset))
+
+    # so im going to do three fold validation on the development set, and with that pick the subset of the dataset
+    # that gave the lowest error, and then use that
+    # for testing on the holdout set that we've been saving
+
+    # # only ever needs to be ran once to train the models initially
+    # development_loader = torch.utils.data.DataLoader(dataset=development_raw_dataset, batch_size=BATCH_SIZE,
+    #                                                  shuffle=True, pin_memory=True, num_workers=2)
     #
-    # # so im going to do three fold validation on the development set, and with that pick the subset of the dataset
-    # # that gave the lowest error, and then use that
-    # # for testing on the holdout set that we've been saving
+    # model_resnet18 = ResNet18(num_classes=int(10))
+    # model_wideresnet = WideResNet(depth=int(28), num_classes=int(10), widen_factor=int(10), dropRate=float(0.3))
+    #
+    # model_resnet18, resnet_save_path = resnet_training(model_resnet18, development_loader, EPOCHS,
+    #                                                    f'./task3/resnet18_model.pt')
+    # model_wideresnet, wide_resnet_save_path = resnet_training(model_wideresnet, development_loader, EPOCHS,
+    #                                                           f'./task3/wide_resnet_model.pt')
 
-    # only ever needs to be ran once to train the models initially
-    development_loader = torch.utils.data.DataLoader(dataset=development_raw_dataset, batch_size=BATCH_SIZE,
-                                                     shuffle=True, pin_memory=True, num_workers=2)
 
-    model_resnet18 = ResNet18(num_classes=int(10))
-    print("done with resnet construction")
-    model_wideresnet = WideResNet(depth=int(28), num_classes=int(10), widen_factor=int(10), dropRate=float(0.3))
-    print("done with wideresnet construction")
 
-    model_resnet18, resnet_save_path = resnet_training(model_resnet18, development_loader, EPOCHS,
-                                                       f'./task3/resnet18_model.pt')
-    model_wideresnet, wide_resnet_save_path = resnet_training(model_wideresnet, development_loader, EPOCHS,
-                                                              f'./task3/wide_resnet_model.pt')
+    holdout_test_loader = torch.utils.data.DataLoader(dataset=holdout_test_dataset, batch_size=BATCH_SIZE,
+                                                     shuffle=False, pin_memory=True, num_workers=2)
+
+    # model_densenet_raw = DenseNet()
+    # model_densenet_raw.load_state_dict(torch.load(f'./task3/temp_model_{str(1)}_raw.pt'))
+    # raw_classification_acc, raw_loss = test_model_loss(model_densenet_raw, holdout_test_loader, EPOCHS)
+    # print(f"DenseNet3 trained on Cifar10 without data augmentation, with cross validation, achieved a classification "
+    #       f"accuracy of {str(raw_classification_acc)} and a loss of {str(np.round(raw_loss, 3))}")
+    #
+    #
+    # model_densenet_aug = DenseNet()
+    # model_densenet_aug.load_state_dict(torch.load(f'./task3/temp_model_{str(1)}_aug.pt'))
+    # aug_classification_acc, aug_loss = test_model_loss(model_densenet_aug, holdout_test_loader, EPOCHS)
+    # print(f"DenseNet3 trained on Cifar10 with data augmentation, with cross validation, achieved a classification "
+    #       f"accuracy of {str(aug_classification_acc)} and a loss of {str(np.round(aug_loss, 3))}")
+    #
+    # model_resnet18 = ResNet18(num_classes=int(10))
+    # model_resnet18.load_state_dict(torch.load(f'./task3/resnet18_model.pt'))
+    # resnet18_classification_acc, resnet18_loss = test_model_loss(model_densenet_aug, holdout_test_loader, EPOCHS)
+    # print(f"ResNet18 trained on Cifar10 achieved a classification accuracy of {str(resnet18_classification_acc)} "
+    #       f"and a loss of {str(np.round(resnet18_loss, 3))}")
+    #
+    # model_wideresnet = WideResNet(depth=int(28), num_classes=int(10), widen_factor=int(10), dropRate=float(0.3))
+    # model_wideresnet.load_state_dict(torch.load(f'./task3/wide_resnet_model.pt'))
+    # wideresnet_classification_acc, wideresnet_loss = test_model_loss(model_densenet_aug, holdout_test_loader, EPOCHS)
+    # print(f"WideResNet trained on Cifar10 achieved a classification accuracy of {str(wideresnet_classification_acc)} "
+    #       f"and a loss of {str(np.round(wideresnet_lossm 3))}")
