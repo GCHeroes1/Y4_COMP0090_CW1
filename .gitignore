@@ -213,3 +213,14 @@ cython_debug/
 
 .idea/
 /Scripts/
+/task3/data/
+/task2/data/
+/data/
+/task3/resnet18_model_2.pt
+/task3/temp_model_0_aug_5.pt
+/task3/temp_model_1_raw_5.pt
+/task3/temp_model_2_aug_5.pt
+/task3/temp_model_2_raw_5.pt
+/pyvenv.cfg
+/cifar-10-python.tar.gz
+/cifar-10-batches-py/

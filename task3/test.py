@@ -53,24 +53,24 @@ def test_model(model, test_loader, epoch):
     return classification_acc
 
 
-def result():
-    ## load the trained model
-    model = DenseNet()
-    model.load_state_dict(torch.load('./task2/saved_model.pt'))
-
-    ## inference
-    images, labels = dataiter.next()
-    outputs = model(images)
-    predicted = torch.max(outputs, 1)[1]
-    for index, (label, prediction) in enumerate(zip(labels, predicted)):
-        print(
-            f"Ground-Truth for image {str(index + 1)} is {str(classes[labels[index]])}, while the predicted class was {str(classes[predicted[index]])}")
-
-    # save to images
-    im = Image.fromarray(
-        (torch.cat(images.split(1, 0), 3).squeeze() / 2 * 255 + .5 * 255).permute(1, 2, 0).numpy().astype('uint8'))
-    im.save("./task2/result.png")
-    print('reference images have been saved to result.png.')
+# def result():
+#     ## load the trained model
+#     model = DenseNet()
+#     model.load_state_dict(torch.load('./task2/saved_model.pt'))
+#
+#     ## inference
+#     images, labels = dataiter.next()
+#     outputs = model(images)
+#     predicted = torch.max(outputs, 1)[1]
+#     for index, (label, prediction) in enumerate(zip(labels, predicted)):
+#         print(
+#             f"Ground-Truth for image {str(index + 1)} is {str(classes[labels[index]])}, while the predicted class was {str(classes[predicted[index]])}")
+#
+#     # save to images
+#     im = Image.fromarray(
+#         (torch.cat(images.split(1, 0), 3).squeeze() / 2 * 255 + .5 * 255).permute(1, 2, 0).numpy().astype('uint8'))
+#     im.save("./task2/result.png")
+#     print('reference images have been saved to result.png.')
 
 
 if __name__ == '__main__':
@@ -86,6 +86,6 @@ if __name__ == '__main__':
     dataiter = iter(testloader)
     classes = ('plane', 'car', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck')
 
-    result()
+    # result()
 
     # test_model(model, testloader)

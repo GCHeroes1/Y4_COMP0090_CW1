@@ -6,7 +6,7 @@ import numpy as np
 
 from densenet3 import DenseNet
 from cutout import Cutout
-from test import test_model, result, test_model_loss
+from test import test_model, test_model_loss
 from dense_training import training
 from resnet import ResNet18
 from wide_resnet import WideResNet
@@ -15,6 +15,11 @@ from resnet_training import resnet_training
 EPOCHS = 5
 
 def three_fold_dataset(data):
+    """
+    generate a three_fold_dataset, dividing the length of the dataset and splitting using SubsetRandomSampler
+    :param data:
+    :return: 3 folds of datasets
+    """
     indices = np.arange(0, len(data))  # build an array = np.asrray( [x for x in range(len(data))])
     np.random.shuffle(indices)  # shuffle the indicies
 
@@ -45,6 +50,13 @@ def three_fold_dataset(data):
 
 
 def three_fold_validation(raw_data, aug_data):
+    """
+    take 2 folds at a time, train model on those 2 and test the model on the last fold. Keep track of their performance
+    and return the paths for the models which gave the best classification accuracy
+    :param raw_data:
+    :param aug_data:
+    :return:
+    """
     fold_raw_dataloaders = three_fold_dataset(raw_data)  # split the dataset into 3 parts
     fold_aug_dataloaders = three_fold_dataset(aug_data)
     raw_predictor = ['', -1]  # update as we find better predictors
@@ -63,9 +75,9 @@ def three_fold_validation(raw_data, aug_data):
         testing_loader = fold_raw_dataloaders[i]
 
         raw_save_path, raw_error = training(temp_raw_model, training_raw_dataloaders, testing_loader,
-                                                            EPOCHS, f'./task3/temp_model_{str(i)}_raw_{str(EPOCHS)}.pt')
+                                                            EPOCHS, f'temp_model_{str(i)}_raw_{str(EPOCHS)}.pt')
         aug_save_path, aug_error = training(temp_aug_model, training_aug_dataloaders, testing_loader,
-                                                            EPOCHS, f'./task3/temp_model_{str(i)}_aug_{str(EPOCHS)}.pt')
+                                                            EPOCHS, f'temp_model_{str(i)}_aug_{str(EPOCHS)}.pt')
         if raw_error >= raw_predictor[1]:
             raw_predictor[0], raw_predictor[1] = raw_save_path, raw_error
         if aug_error >= aug_predictor[1]:
@@ -138,11 +150,6 @@ if __name__ == '__main__':
     holdout_test_loader = torch.utils.data.DataLoader(dataset=holdout_test_dataset, batch_size=BATCH_SIZE,
                                                      shuffle=False, pin_memory=True, num_workers=2)
 
-    # f = open('./task3/task3_5_epochs.txt', 'r')
-    # content = f.read()
-    # print(content)
-    # f.close()
-
     # model_densenet_raw = DenseNet()
     # model_densenet_raw.load_state_dict(torch.load(f'./task3/temp_model_{str(0)}_raw_5.pt'))
     # raw_classification_acc, raw_loss = test_model_loss(model_densenet_raw, holdout_test_loader, EPOCHS)
@@ -158,12 +165,17 @@ if __name__ == '__main__':
     #
     # model_resnet18 = ResNet18(num_classes=int(10))
     # model_resnet18.load_state_dict(torch.load(f'./task3/resnet18_model.pt'))
-    # resnet18_classification_acc, resnet18_loss = test_model_loss(model_densenet_aug, holdout_test_loader, EPOCHS)
+    # resnet18_classification_acc, resnet18_loss = test_model_loss(model_resnet18, holdout_test_loader, EPOCHS)
     # print(f"ResNet18 trained on Cifar10 achieved a classification accuracy of {str(resnet18_classification_acc)} "
     #       f"and a loss of {str(np.round(resnet18_loss, 3))}")
     #
     # model_wideresnet = WideResNet(depth=int(28), num_classes=int(10), widen_factor=int(10), dropRate=float(0.3))
     # model_wideresnet.load_state_dict(torch.load(f'./task3/wide_resnet_model.pt'))
-    # wideresnet_classification_acc, wideresnet_loss = test_model_loss(model_densenet_aug, holdout_test_loader, EPOCHS)
+    # wideresnet_classification_acc, wideresnet_loss = test_model_loss(model_wideresnet, holdout_test_loader, EPOCHS)
     # print(f"WideResNet trained on Cifar10 achieved a classification accuracy of {str(wideresnet_classification_acc)} "
-    #       f"and a loss of {str(np.round(wideresnet_lossm 3))}")
+    #       f"and a loss of {str(np.round(wideresnet_loss, 3))}")
+    #
+    f = open('task3_5_epochs.txt', 'r')
+    content = f.read()
+    print(content)
+    f.close()

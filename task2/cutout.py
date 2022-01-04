@@ -119,5 +119,5 @@ if __name__ == '__main__':
         test_image = images[0]
         # test = Image.fromarray(np.uint8(test_image * 255))
         test = Image.fromarray(np.uint8(test_image.permute(1, 2, 0) / 2 * 255 + .5 * 255))
-        test.save("./task2/train_pt_images.jpg")
+        test.save("train_pt_images.jpg")
         break

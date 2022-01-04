@@ -1,7 +1,7 @@
 import torch
 import torch.optim as optim
 
-from test import test_model, result
+from test import test_model
 
 import time
 import numpy as np

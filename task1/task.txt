@@ -1,0 +1,12 @@
+the LS optimised weights are
+tensor([[ 1.0188e+00],
+        [ 2.0002e+00],
+        [ 2.9999e+00],
+        [ 4.0000e+00],
+        [-2.9802e-08]])
+ a - Observed data mean difference = -0.002361232414841652
+ a - Observed data std = 0.19970819354057312
+ b - LS data mean difference = 0.0004677009710576385
+ b - LS data std = 0.01976190321147442
+ c - SGD data mean difference = -144.1201171875
+ c - SGD data std = 38225.23828125

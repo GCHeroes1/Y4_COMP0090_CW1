@@ -51,7 +51,7 @@ def result(testloader):
     # im.save("./task2/result.png")
     im = Image.fromarray(
         (torch.cat(images.split(1, 0), 3).squeeze() / 2 * 255 + .5 * 255).permute(1, 2, 0).numpy().astype('uint8'))
-    im.save("./result.png")
+    im.save("result.png")
     print('\nreference images have been saved to result.png.')
 
 

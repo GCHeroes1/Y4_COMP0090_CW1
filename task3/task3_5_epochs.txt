@@ -117,3 +117,8 @@ Training done.
 Model saved to ./task3/temp_model_2_aug_5.pt.
 
 (['./task3/temp_model_0_raw_5.pt', 63.84909622740569], ['./task3/temp_model_1_aug_5.pt', 67.87160641967903])
+
+DenseNet3 trained on Cifar10 without data augmentation, with cross validation, achieved a classification accuracy of 68.64 and a loss of 0.056
+DenseNet3 trained on Cifar10 with data augmentation, with cross validation, achieved a classification accuracy of 67.95 and a loss of 0.057
+ResNet18 trained on Cifar10 achieved a classification accuracy of 91.9 and a loss of 0.016
+WideResNet trained on Cifar10 achieved a classification accuracy of 70.85000000000001 and a loss of 0.053
