@@ -216,6 +216,7 @@ cython_debug/
 /task3/data/
 /task2/data/
 /data/
+/task3/resnet18_model.pt
 /task3/resnet18_model_2.pt
 /task3/temp_model_0_aug_5.pt
 /task3/temp_model_1_raw_5.pt
